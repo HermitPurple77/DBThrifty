@@ -1,18 +1,16 @@
 SELECT 
-    o.OrderID,
+    pay.PaymentID,
     c.CustomerName,
-    c.Phone,
+    c.Phone AS Contact,
+    o.OrderID,
     p.ProductName,
-    o.Quantity AS OrderQuantity,
-    o.Price AS UnitPrice,
-    o.TotalAmount,
-    o.OrderDate,
+    o.Quantity AS QtyOrdered,
+    o.TotalAmount AS OrderTotal,
     pay.PaymentMethod,
     pay.AmountPaid,
     pay.PaymentDate
-FROM Orders o
-INNER JOIN Customers c ON o.CustomerID = c.CustomerID
-INNER JOIN Products p ON o.ProductID = p.ProductID
-LEFT JOIN Payments pay ON o.OrderID = pay.OrderID
-ORDER BY o.OrderDate DESC;
-// REPORT SUMMARY!!!
+FROM Payments pay
+JOIN Customers c ON pay.CustomerID = c.CustomerID
+LEFT JOIN Orders o ON pay.OrderID = o.OrderID
+LEFT JOIN Products p ON o.ProductID = p.ProductID
+ORDER BY pay.PaymentDate DESC;
